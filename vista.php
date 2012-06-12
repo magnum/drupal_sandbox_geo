@@ -8,6 +8,17 @@ $view->core = 6;
 $view->api_version = '2';
 $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 $handler = $view->new_display('default', 'Defaults', 'default');
+$handler->override_option('relationships', array(
+  'field_owner_squadra_nid' => array(
+    'label' => 'squadra_owner',
+    'required' => 1,
+    'delta' => -1,
+    'id' => 'field_owner_squadra_nid',
+    'table' => 'node_data_field_owner_squadra',
+    'field' => 'field_owner_squadra_nid',
+    'relationship' => 'none',
+  ),
+));
 $handler->override_option('fields', array(
   'nid' => array(
     'label' => 'Nid',
@@ -52,7 +63,7 @@ $handler->override_option('fields', array(
   ),
 ));
 $handler->override_option('arguments', array(
-  'nid' => array(
+  'field_owner_squadra_nid' => array(
     'default_action' => 'default',
     'style_plugin' => 'default_summary',
     'style_options' => array(),
@@ -62,20 +73,17 @@ $handler->override_option('arguments', array(
     'breadcrumb' => '',
     'default_argument_type' => 'node',
     'default_argument' => '',
-    'validate_type' => 'none',
+    'validate_type' => 'node',
     'validate_fail' => 'not found',
     'break_phrase' => 0,
-    'not' => 1,
-    'id' => 'nid',
-    'table' => 'node',
-    'field' => 'nid',
+    'not' => 0,
+    'id' => 'field_owner_squadra_nid',
+    'table' => 'node_data_field_owner_squadra',
+    'field' => 'field_owner_squadra_nid',
     'validate_user_argument_type' => 'uid',
     'validate_user_roles' => array(
       2 => 0,
       3 => 0,
-    ),
-    'override' => array(
-      'button' => 'Override',
     ),
     'relationship' => 'none',
     'default_options_div_prefix' => '',
@@ -87,12 +95,12 @@ $handler->override_option('arguments', array(
     'default_argument_fixed' => '',
     'default_argument_php' => '',
     'validate_argument_node_type' => array(
+      'squadra' => 'squadra',
       'page' => 0,
       'post' => 0,
-      'squadra' => 0,
       'story' => 0,
     ),
-    'validate_argument_node_access' => 0,
+    'validate_argument_node_access' => 1,
     'validate_argument_nid_type' => 'nid',
     'validate_argument_vocabulary' => array(),
     'validate_argument_type' => 'tid',
@@ -116,6 +124,42 @@ $handler->override_option('filters', array(
     'id' => 'type',
     'table' => 'node',
     'field' => 'type',
+    'relationship' => 'none',
+  ),
+  'latitude' => array(
+    'operator' => 'not empty',
+    'value' => array(
+      'value' => '',
+      'min' => '',
+      'max' => '',
+    ),
+    'group' => '0',
+    'exposed' => FALSE,
+    'expose' => array(
+      'operator' => FALSE,
+      'label' => '',
+    ),
+    'id' => 'latitude',
+    'table' => 'location',
+    'field' => 'latitude',
+    'relationship' => 'none',
+  ),
+  'longitude' => array(
+    'operator' => 'not empty',
+    'value' => array(
+      'value' => '',
+      'min' => '',
+      'max' => '',
+    ),
+    'group' => '0',
+    'exposed' => FALSE,
+    'expose' => array(
+      'operator' => FALSE,
+      'label' => '',
+    ),
+    'id' => 'longitude',
+    'table' => 'location',
+    'field' => 'longitude',
     'relationship' => 'none',
   ),
 ));
@@ -157,4 +201,3 @@ $handler->override_option('displays', array(
   'block_1' => 'block_1',
   'default' => 0,
 ));
-
