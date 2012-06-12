@@ -1,0 +1,37 @@
+<?php
+
+function html5_user_geolocation_install() {
+  drupal_install_schema('html5_user_geolocation');
+}
+
+function html5_user_geolocation_uninstall() {
+  drupal_uninstall_schema('html5_user_geolocation');
+}
+
+function html5_user_geolocation_schema() {
+  return array(
+    'html5_user_geolocation' => array(
+      'fields' => array(
+        'uid' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'description' => 'User ID',
+        ),
+        'latitude' => array(
+          'type' => 'numeric',
+          'precision' => 10,
+          'scale' => 7,
+          'not null' => TRUE,
+        ),
+        'longitude' => array(
+          'type' => 'numeric',
+          'precision' => 10,
+          'scale' => 7,
+          'not null' => TRUE,
+        ),
+      ),
+      'primary key' => array('uid'),
+    ),
+  );
+}

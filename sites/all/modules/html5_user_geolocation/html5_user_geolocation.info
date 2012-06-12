@@ -1,0 +1,11 @@
+; $Id: html5_user_geolocation.info,v 1.1 2010/09/02 20:09:27 drumm Exp $
+name = HTML5 User Geolocation
+description = "Store users’ location using an HTML5 prompt."
+core = 6.x
+
+; Information added by drupal.org packaging script on 2010-09-04
+version = "6.x-1.0-alpha3"
+core = "6.x"
+project = "html5_user_geolocation"
+datestamp = "1283642807"
+
