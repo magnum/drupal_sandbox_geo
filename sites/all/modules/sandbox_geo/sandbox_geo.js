@@ -26,11 +26,23 @@
     if (viewform.length == 0) {
       return;
     }
-    if (navigator.geolocation) {
+    // usa la "user location" come preset se esiste
+    if (Drupal.settings.sandbox_geo !== undefined) {
+      var preset_lat = parseFloat(Drupal.settings.sandbox_geo.user_preset_location_lat);
+      var preset_lon = parseFloat(Drupal.settings.sandbox_geo.user_preset_location_lon);
+      // safety net
+      if (!isNaN(preset_lon) && !isNaN(preset_lat)) {
+        var form_input_lat = $('#edit-distance-latitude', viewform);
+        var form_input_lon = $('#edit-distance-longitude', viewform);
+        form_input_lon.attr('value', preset_lat);
+        form_input_lat.attr('value', preset_lon);
+      }
+    }
+    else if (navigator.geolocation) {
       // meglio non mostrare messaggio di geolocalizzazione in atto
       // dato che non si riesce a rilevare il fatto che l'utente
       // scelga "Not Now" per la geolocalizzazione
-      viewform.append('<div id="geolocation-in-atto">Geolocation in atto</div>');
+      //viewform.append('<div id="geolocation-in-atto">Geolocation in atto</div>');
       getLocation(viewform)
     }
     else { // HTML5 Geolocation not supported
