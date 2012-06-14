@@ -1,6 +1,6 @@
 <?php
 $view = new view;
-$view->name = 'mappa';
+$view->name = 'mappa2';
 $view->description = 'mappa';
 $view->tag = 'location';
 $view->base_table = 'node';
@@ -100,7 +100,7 @@ $handler->override_option('arguments', array(
       'post' => 0,
       'story' => 0,
     ),
-    'validate_argument_node_access' => 1,
+    'validate_argument_node_access' => 0,
     'validate_argument_nid_type' => 'nid',
     'validate_argument_vocabulary' => array(),
     'validate_argument_type' => 'tid',
@@ -160,6 +160,33 @@ $handler->override_option('filters', array(
     'id' => 'longitude',
     'table' => 'location',
     'field' => 'longitude',
+    'relationship' => 'none',
+  ),
+  'distance' => array(
+    'operator' => 'mbr',
+    'value' => array(
+      'latitude' => '-4.565474 ',
+      'longitude' => '-89.648438',
+      'postal_code' => '',
+      'country' => '',
+      'php_code' => '',
+      'nid_arg' => '',
+      'nid_loc_field' => 'node',
+      'uid_arg' => '',
+      'search_distance' => '10000',
+      'search_units' => 'km',
+    ),
+    'group' => '0',
+    'exposed' => FALSE,
+    'expose' => array(
+      'operator' => FALSE,
+      'label' => '',
+    ),
+    'identifier' => 'dist',
+    'origin' => 'static',
+    'id' => 'distance',
+    'table' => 'location',
+    'field' => 'distance',
     'relationship' => 'none',
   ),
 ));
