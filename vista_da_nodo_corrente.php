@@ -252,6 +252,96 @@ $handler = $view->new_display('block', 'Block', 'block_1');
 $handler->override_option('block_description', 'blocco da mostrare sulla vista di un nodo');
 $handler->override_option('block_caching', -1);
 $handler = $view->new_display('attachment', 'Attachment', 'attachment_1');
+$handler->override_option('filters', array(
+  'type' => array(
+    'operator' => 'in',
+    'value' => array(
+      'post' => 'post',
+    ),
+    'group' => '0',
+    'exposed' => FALSE,
+    'expose' => array(
+      'operator' => FALSE,
+      'label' => '',
+    ),
+    'id' => 'type',
+    'table' => 'node',
+    'field' => 'type',
+    'relationship' => 'none',
+  ),
+  'latitude' => array(
+    'operator' => 'not empty',
+    'value' => array(
+      'value' => '',
+      'min' => '',
+      'max' => '',
+    ),
+    'group' => '0',
+    'exposed' => FALSE,
+    'expose' => array(
+      'operator' => FALSE,
+      'label' => '',
+    ),
+    'id' => 'latitude',
+    'table' => 'location',
+    'field' => 'latitude',
+    'relationship' => 'none',
+  ),
+  'longitude' => array(
+    'operator' => 'not empty',
+    'value' => array(
+      'value' => '',
+      'min' => '',
+      'max' => '',
+    ),
+    'group' => '0',
+    'exposed' => FALSE,
+    'expose' => array(
+      'operator' => FALSE,
+      'label' => '',
+    ),
+    'id' => 'longitude',
+    'table' => 'location',
+    'field' => 'longitude',
+    'relationship' => 'none',
+  ),
+  'distance' => array(
+    'operator' => 'dist',
+    'value' => array(
+      'latitude' => '',
+      'longitude' => '',
+      'postal_code' => '',
+      'country' => '',
+      'php_code' => '',
+      'nid_arg' => 'nid',
+      'nid_loc_field' => 'node',
+      'uid_arg' => '',
+      'search_distance' => '10000',
+      'search_units' => 'km',
+    ),
+    'group' => '0',
+    'exposed' => TRUE,
+    'expose' => array(
+      'use_operator' => 1,
+      'operator' => 'distance_op',
+      'identifier' => 'distance',
+      'label' => 'Location: Distance / Proximity',
+      'user_location_choose' => 0,
+      'optional' => 1,
+      'remember' => 0,
+    ),
+    'identifier' => 'dist',
+    'origin' => 'nid_arg',
+    'id' => 'distance',
+    'table' => 'location',
+    'field' => 'distance',
+    'relationship' => 'none',
+    'gmap_macro' => '',
+    'override' => array(
+      'button' => 'Use default',
+    ),
+  ),
+));
 $handler->override_option('style_plugin', 'gmap');
 $handler->override_option('style_options', array(
   'grouping' => '',
@@ -270,9 +360,9 @@ $handler->override_option('style_options', array(
   'tooltipenabled' => 0,
   'tooltipfield' => 'nid',
 ));
-$handler->override_option('attachment_position', 'before');
+$handler->override_option('attachment_position', 'after');
 $handler->override_option('inherit_arguments', TRUE);
-$handler->override_option('inherit_exposed_filters', FALSE);
+$handler->override_option('inherit_exposed_filters', 1);
 $handler->override_option('inherit_pager', FALSE);
 $handler->override_option('render_pager', TRUE);
 $handler->override_option('displays', array(
