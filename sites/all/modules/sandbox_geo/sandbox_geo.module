@@ -8,3 +8,13 @@ function sandbox_geo_views_api() {
     'api' => 2.0,
   );
 }
+
+function sandbox_geo_form_views_exposed_form_alter(&$form, &$form_alter) {
+  if ($form['#id'] == 'views-exposed-form-ricerca-generica-page-1') {
+    $form['distance']['ricerca_utente'] = array (
+      '#type' => 'textfield',
+      '#weight' => -100,
+      '#title' => 'Ricerca Utente',
+    );
+  }
+}

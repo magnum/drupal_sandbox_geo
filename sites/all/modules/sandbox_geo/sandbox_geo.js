@@ -1,11 +1,12 @@
 (function () {
-  function getLocation(viewform) {
 
+  function getLocation(viewform) {
     navigator.geolocation.getCurrentPosition(function (position) {
       var form_input_lat = $('#edit-distance-latitude', viewform);
       var form_input_lon = $('#edit-distance-longitude', viewform);
-      form_input_lon.attr('value', position.coords.longitude);
       form_input_lat.attr('value', position.coords.latitude);
+      form_input_lon.attr('value', position.coords.longitude);
+      doReverseGeocoding(position.coords.latitude, position.coords.longitude, viewform);
     }, function () { // getCurrentPosition error callback
       // In firefox clicking "Not Now" does NOT fire the error callback, vedi
       // https://bugzil.la/675533
@@ -20,7 +21,23 @@
     });
   }
 
-  Drupal.behaviors.html5UserGeolocation = function (context) {
+  function doReverseGeocoding(lat, lon, viewform) {
+    var geocoder = new GClientGeocoder();
+    var glatlon = new GLatLng(lat, lon);
+    geocoder.getLocations(glatlon, function (response) {
+      if (!response || response.Status.code != 200) {
+        // do something when the google reverse geocoding has failed
+        // (that's after we successfully got the coordinates from the client)
+      } else {
+        // write in the textfield the reverse geocoded address
+        var text_addr = response.Placemark[0].address;
+        var ricerca_utente_text_field = $('#edit-distance-ricerca-utente', viewform);
+        ricerca_utente_text_field.val(text_addr);
+      }
+    });
+  }
+
+  Drupal.behaviors.mappagenerica = function (context) {
     var viewform = $('#views-exposed-form-ricerca-generica-page-1');
     // non far nulla se non trovi il form del filtro esposto della view
     if (viewform.length == 0) {
@@ -36,6 +53,7 @@
         var form_input_lon = $('#edit-distance-longitude', viewform);
         form_input_lon.attr('value', preset_lat);
         form_input_lat.attr('value', preset_lon);
+        doReverseGeocoding(preset_lat, preset_lon, viewform);
       }
     }
     else if (navigator.geolocation) {
