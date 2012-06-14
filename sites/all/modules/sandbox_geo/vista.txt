@@ -1,0 +1,169 @@
+$view = new view;
+$view->name = 'ricerca_generica';
+$view->description = 'Ricerca nodi a partire da posizione specificata da utente con default che vale posizione html5';
+$view->tag = 'location';
+$view->base_table = 'location';
+$view->core = 6;
+$view->api_version = '2';
+$view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+$handler = $view->new_display('default', 'Defaults', 'default');
+$handler->override_option('fields', array(
+  'nid' => array(
+    'label' => 'Nid',
+    'alter' => array(
+      'alter_text' => 0,
+      'text' => '',
+      'make_link' => 0,
+      'path' => '',
+      'absolute' => 0,
+      'link_class' => '',
+      'alt' => '',
+      'rel' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'target' => '',
+      'help' => '',
+      'trim' => 0,
+      'max_length' => '',
+      'word_boundary' => 1,
+      'ellipsis' => 1,
+      'html' => 0,
+      'strip_tags' => 0,
+    ),
+    'empty' => '',
+    'hide_empty' => 0,
+    'empty_zero' => 0,
+    'hide_alter_empty' => 1,
+    'link_to_node' => 0,
+    'exclude' => 0,
+    'id' => 'nid',
+    'table' => 'node',
+    'field' => 'nid',
+    'relationship' => 'none',
+  ),
+));
+$handler->override_option('filters', array(
+  'type' => array(
+    'operator' => 'in',
+    'value' => array(
+      'page' => 'page',
+      'post' => 'post',
+      'squadra' => 'squadra',
+      'story' => 'story',
+    ),
+    'group' => '0',
+    'exposed' => FALSE,
+    'expose' => array(
+      'operator' => FALSE,
+      'label' => '',
+    ),
+    'id' => 'type',
+    'table' => 'node',
+    'field' => 'type',
+    'relationship' => 'none',
+  ),
+  'distance' => array(
+    'id' => 'distance',
+    'table' => 'location',
+    'field' => 'distance',
+  ),
+));
+$handler->override_option('access', array(
+  'type' => 'none',
+));
+$handler->override_option('cache', array(
+  'type' => 'none',
+));
+$handler->override_option('items_per_page', 0);
+$handler = $view->new_display('page', 'Page mappa', 'page_1');
+$handler->override_option('filters', array(
+  'type' => array(
+    'operator' => 'in',
+    'value' => array(
+      'page' => 'page',
+      'post' => 'post',
+      'squadra' => 'squadra',
+      'story' => 'story',
+    ),
+    'group' => '0',
+    'exposed' => FALSE,
+    'expose' => array(
+      'operator' => FALSE,
+      'label' => '',
+    ),
+    'id' => 'type',
+    'table' => 'node',
+    'field' => 'type',
+    'relationship' => 'none',
+  ),
+  'distance' => array(
+    'operator' => 'mbr',
+    'value' => array(
+      'latitude' => '',
+      'longitude' => '',
+      'postal_code' => '',
+      'country' => '',
+      'php_code' => '',
+      'nid_arg' => '',
+      'nid_loc_field' => 'node',
+      'uid_arg' => '',
+      'search_distance' => '1000000',
+      'search_units' => 'km',
+    ),
+    'group' => '0',
+    'exposed' => TRUE,
+    'expose' => array(
+      'use_operator' => 0,
+      'operator' => 'distance_op',
+      'identifier' => 'distance',
+      'label' => 'Location: Distance / Proximity',
+      'user_location_choose' => 0,
+      'optional' => 1,
+      'remember' => 0,
+    ),
+    'identifier' => 'dist',
+    'origin' => 'static',
+    'id' => 'distance',
+    'table' => 'location',
+    'field' => 'distance',
+    'override' => array(
+      'button' => 'Use default',
+    ),
+    'relationship' => 'none',
+    'gmap_macro' => '',
+  ),
+));
+$handler->override_option('title', 'Ricerca Nodi');
+$handler->override_option('style_plugin', 'gmap');
+$handler->override_option('style_options', array(
+  'grouping' => '',
+  'macro' => '[gmap zoom=1 |center=18.646245142670608,0.703125 |width=600px |height=400px |control=Small |type=Map]',
+  'datasource' => 'location',
+  'latfield' => 'nid',
+  'lonfield' => 'nid',
+  'markers' => 'static',
+  'markerfield' => 'nid',
+  'markertype' => 'drupal',
+  'center_on_nodearg' => 0,
+  'center_on_nodearg_arg' => '',
+  'highlight_nodearg' => 0,
+  'highlight_nodearg_arg' => '',
+  'highlight_nodearg_color' => '#FF0000',
+  'tooltipenabled' => 0,
+  'tooltipfield' => 'nid',
+));
+$handler->override_option('path', 'mappa_ricerca');
+$handler->override_option('menu', array(
+  'type' => 'none',
+  'title' => '',
+  'description' => '',
+  'weight' => 0,
+  'name' => 'navigation',
+));
+$handler->override_option('tab_options', array(
+  'type' => 'none',
+  'title' => '',
+  'description' => '',
+  'weight' => 0,
+  'name' => 'navigation',
+));
