@@ -1,62 +1,37 @@
 (function () {
-  function latitudeToMercator(latitude) {
-    return Math.log(Math.tan(latitude * Math.PI / 180) + 1 / Math.cos(latitude * Math.PI / 180));
-  }
+  function getLocation(viewform) {
 
-  Drupal.html5UserGeolocationLongitudeToPx = function (longitude, leftLongitude, width) {
-    return (longitude - leftLongitude + 360) / 360 % 1 * width;
-  }
-
-  Drupal.html5UserGeolocationLatitudeToPx = function (latitude, topLatitude, bottomLatitude, height) {
-    return (latitudeToMercator(latitude) - latitudeToMercator(bottomLatitude))
-           / (latitudeToMercator(topLatitude) - latitudeToMercator(bottomLatitude))
-           * height;
-  }
-
-
-  function getLocation() {
-    if ($('#edit-html5-user-geolocation-save').attr('checked')) {
-      var $busy = $('#html5-user-geolocation-messages-wrapper .geolocating');
-      $('#html5-user-geolocation-map-wrapper').slideDown('fast');
-
-      // Get position
-      $busy.show();
-      navigator.geolocation.getCurrentPosition(function (position) {
-        // Save coords
-        $('#edit-html5-user-geolocation-latitude').attr('value', position.coords.latitude);
-        $('#edit-html5-user-geolocation-longitude').attr('value', position.coords.longitude);
-
-        $busy.hide();
-      }, function () { // getCurrentPosition error callback
-        $('#edit-html5-user-geolocation-save').attr('checked', false).change();
-      },
-      {
-        maximumAge: Infinity
-      });
-    }
-    else { // Location not checked
-      $('#html5-user-geolocation-map-wrapper').slideUp('fast');
-    }
+    navigator.geolocation.getCurrentPosition(function (position) {
+      var form_input_lat = $('#edit-distance-latitude', viewform);
+      var form_input_lon = $('#edit-distance-longitude', viewform);
+      form_input_lon.attr('value', position.coords.longitude);
+      form_input_lat.attr('value', position.coords.latitude);
+    }, function () { // getCurrentPosition error callback
+      // In firefox clicking "Not Now" does NOT fire the error callback, vedi
+      // https://bugzil.la/675533
+      viewform.append('<div id="errore-geolocation">Errore di geolocalizzazione</div>');
+    }, {
+      //maximumAge: Infinity,
+      // Accetta posizione cachata da non + di 100 minuti
+      maximumAge: 0,
+      //maximumAge: 6000000,
+      // timeout di recupero info lat/lon. 20 secondi
+      timeout: 20000,
+    });
   }
 
   Drupal.behaviors.html5UserGeolocation = function (context) {
+    var viewform = $('#views-exposed-form-ricerca-generica-page-1');
+    // non far nulla se non trovi il form del filtro esposto della view
+    if (viewform.length == 0) {
+      return;
+    }
     if (navigator.geolocation) {
-      $('#user-profile-form #edit-html5-user-geolocation-save:not(.html5-user-geolocation-processed)', context)
-      .addClass('html5-user-geolocation-processed')
-      .change(function () {
-        getLocation();
-      })
-      .each(function () {
-        $('#html5-user-geolocation-messages-wrapper .not-supported').hide();
-        if ($('#edit-html5-user-geolocation-save').attr('checked')) {
-          $('#html5-user-geolocation-map-wrapper').slideDown('fast');
-          plot();
-        }
-        getLocation();
-      });
+      viewform.append('<div id="geolocation-in-atto">Geolocation in atto</div>');
+      getLocation(viewform)
     }
     else { // HTML5 Geolocation not supported
-      $('#edit-html5-user-geolocation-save').attr('disabled', true);
+      viewform.append('<div>Geolocation non supportata</div>');
     }
   };
 }());
