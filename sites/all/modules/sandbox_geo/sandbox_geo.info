@@ -1,0 +1,9 @@
+; $Id:
+name = Sandboxgeo
+description =  Modulo che espande la vista di ricerca nodi generica per avere html5 location
+package = Other
+version = VERSION
+core = 6.x
+
+dependencies[] = location
+dependencies[] = gmap
