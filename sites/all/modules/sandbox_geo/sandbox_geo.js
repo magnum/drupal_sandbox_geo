@@ -33,6 +33,8 @@
         var text_addr = response.Placemark[0].address;
         var ricerca_utente_text_field = $('#edit-distance-ricerca-utente', viewform);
         ricerca_utente_text_field.val(text_addr);
+        var gmappa = Drupal.gmap.getMap('ricerca_generica');
+        gmappa.map.setCenter(new GLatLng(lat, lon), 10);
       }
     });
   }
