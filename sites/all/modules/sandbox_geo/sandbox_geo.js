@@ -27,6 +27,9 @@
       return;
     }
     if (navigator.geolocation) {
+      // meglio non mostrare messaggio di geolocalizzazione in atto
+      // dato che non si riesce a rilevare il fatto che l'utente
+      // scelga "Not Now" per la geolocalizzazione
       viewform.append('<div id="geolocation-in-atto">Geolocation in atto</div>');
       getLocation(viewform)
     }
