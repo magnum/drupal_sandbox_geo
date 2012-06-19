@@ -63,40 +63,6 @@ $handler->override_option('filters', array(
     'relationship' => 'none',
   ),
   'distance' => array(
-    'id' => 'distance',
-    'table' => 'location',
-    'field' => 'distance',
-  ),
-));
-$handler->override_option('access', array(
-  'type' => 'none',
-));
-$handler->override_option('cache', array(
-  'type' => 'none',
-));
-$handler->override_option('items_per_page', 0);
-$handler = $view->new_display('page', 'Page mappa', 'page_1');
-$handler->override_option('filters', array(
-  'type' => array(
-    'operator' => 'in',
-    'value' => array(
-      'page' => 'page',
-      'post' => 'post',
-      'squadra' => 'squadra',
-      'story' => 'story',
-    ),
-    'group' => '0',
-    'exposed' => FALSE,
-    'expose' => array(
-      'operator' => FALSE,
-      'label' => '',
-    ),
-    'id' => 'type',
-    'table' => 'node',
-    'field' => 'type',
-    'relationship' => 'none',
-  ),
-  'distance' => array(
     'operator' => 'mbr',
     'value' => array(
       'latitude' => '',
@@ -107,7 +73,7 @@ $handler->override_option('filters', array(
       'nid_arg' => '',
       'nid_loc_field' => 'node',
       'uid_arg' => '',
-      'search_distance' => '1000000',
+      'search_distance' => '50',
       'search_units' => 'km',
     ),
     'group' => '0',
@@ -126,22 +92,30 @@ $handler->override_option('filters', array(
     'id' => 'distance',
     'table' => 'location',
     'field' => 'distance',
-    'override' => array(
-      'button' => 'Use default',
-    ),
     'relationship' => 'none',
+    'override' => array(
+      'button' => 'Override',
+    ),
     'gmap_macro' => '',
   ),
 ));
+$handler->override_option('access', array(
+  'type' => 'none',
+));
+$handler->override_option('cache', array(
+  'type' => 'none',
+));
+$handler->override_option('items_per_page', 0);
+$handler = $view->new_display('page', 'Page mappa', 'page_1');
 $handler->override_option('title', 'Ricerca Nodi');
 $handler->override_option('style_plugin', 'gmap');
 $handler->override_option('style_options', array(
   'grouping' => '',
-  'macro' => '[gmap zoom=1 |center=18.646245142670608,0.703125 |width=600px |height=400px |control=Small |type=Map]',
+  'macro' => '[gmap zoom=9 |center=41.89409955811395,12.46124267578125 |width=600px |height=400px |control=Small |type=Map |id=ricerca_generica]',
   'datasource' => 'location',
   'latfield' => 'nid',
   'lonfield' => 'nid',
-  'markers' => 'static',
+  'markers' => 'nodetype',
   'markerfield' => 'nid',
   'markertype' => 'drupal',
   'center_on_nodearg' => 0,
