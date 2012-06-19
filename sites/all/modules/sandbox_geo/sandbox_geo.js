@@ -46,6 +46,7 @@
     var viewform = $('#views-exposed-form-ricerca-generica-page-1');
     var form_input_lat = $('#edit-distance-latitude', viewform);
     var form_input_lon = $('#edit-distance-longitude', viewform);
+    var ricerca_utente_text_field = $('#edit-distance-ricerca-utente', viewform);
     // non far nulla se non trovi il form del filtro esposto della view
     if (viewform.length == 0) {
       return;
@@ -63,7 +64,7 @@
     }
     // se invece abbiamo come lat e lon il valore di default della view (vuoti)
     // allora tenta la geolocation html5.
-    else if (form_input_lat.val() === '' && form_input_lon.val() === '' && navigator.geolocation) {
+    else if (ricerca_utente_text_field.val() === '' && navigator.geolocation) {
       // meglio non mostrare messaggio di geolocalizzazione in atto
       // dato che non si riesce a rilevare il fatto che l'utente
       // scelga "Not Now" per la geolocalizzazione
@@ -77,6 +78,10 @@
       e.preventDefault();
       var geocoder = new GClientGeocoder();
       var ricerca_utente_text_field = $('#edit-distance-ricerca-utente', viewform);
+      if(ricerca_utente_text_field.val() === '') {
+        viewform.submit();
+        return;
+      }
       geocoder.getLatLng(ricerca_utente_text_field.val(),
         function(point) {
           if (point) {
