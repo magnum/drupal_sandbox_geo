@@ -1,12 +1,14 @@
 (function () {
 
-  function getLocation(viewform) {
+  function getLocationDoReverseGeocodingAndSubmit(viewform) {
     navigator.geolocation.getCurrentPosition(function (position) {
       var form_input_lat = $('#edit-distance-latitude', viewform);
       var form_input_lon = $('#edit-distance-longitude', viewform);
+      // write the lat/lon values in the form
       form_input_lat.attr('value', position.coords.latitude);
       form_input_lon.attr('value', position.coords.longitude);
-      doReverseGeocoding(position.coords.latitude, position.coords.longitude, viewform);
+      // obtain the human-readable address from the lat/lon
+      doReverseGeocodingAndSubmit(position.coords.latitude, position.coords.longitude, viewform);
     }, function () { // getCurrentPosition error callback
       // In firefox clicking "Not Now" does NOT fire the error callback, vedi
       // https://bugzil.la/675533
@@ -21,7 +23,8 @@
     });
   }
 
-  function doReverseGeocoding(lat, lon, viewform) {
+  // obtain the human-readable address from the lat/lon
+  function doReverseGeocodingAndSubmit(lat, lon, viewform) {
     var geocoder = new GClientGeocoder();
     var glatlon = new GLatLng(lat, lon);
     geocoder.getLocations(glatlon, function (response) {
@@ -33,57 +36,72 @@
         var text_addr = response.Placemark[0].address;
         var ricerca_utente_text_field = $('#edit-distance-ricerca-utente', viewform);
         ricerca_utente_text_field.val(text_addr);
-        var gmappa = Drupal.gmap.getMap('ricerca_generica');
-        gmappa.map.setCenter(new GLatLng(lat, lon), 16);
       }
+      // submit the form so that the view uses the new lat/lon
+      viewform.submit();
     });
   }
 
   Drupal.behaviors.mappagenerica = function (context) {
     var viewform = $('#views-exposed-form-ricerca-generica-page-1');
+    var form_input_lat = $('#edit-distance-latitude', viewform);
+    var form_input_lon = $('#edit-distance-longitude', viewform);
     // non far nulla se non trovi il form del filtro esposto della view
     if (viewform.length == 0) {
       return;
     }
-    // usa la "user location" come preset se esiste
+    // usa la "user location" di Drupal (come preset) se esiste
     if (Drupal.settings.sandbox_geo !== undefined) {
       var preset_lat = parseFloat(Drupal.settings.sandbox_geo.user_preset_location_lat);
       var preset_lon = parseFloat(Drupal.settings.sandbox_geo.user_preset_location_lon);
       // safety net
       if (!isNaN(preset_lon) && !isNaN(preset_lat)) {
-        var form_input_lat = $('#edit-distance-latitude', viewform);
-        var form_input_lon = $('#edit-distance-longitude', viewform);
         form_input_lon.attr('value', preset_lat);
         form_input_lat.attr('value', preset_lon);
-        doReverseGeocoding(preset_lat, preset_lon, viewform);
+        doReverseGeocodingAndSubmit(preset_lat, preset_lon, viewform);
       }
     }
-    else if (navigator.geolocation) {
+    // se invece abbiamo come lat e lon il valore di default della view (vuoti)
+    // allora tenta la geolocation html5.
+    else if (form_input_lat.val() === '' && form_input_lon.val() === '' && navigator.geolocation) {
       // meglio non mostrare messaggio di geolocalizzazione in atto
       // dato che non si riesce a rilevare il fatto che l'utente
       // scelga "Not Now" per la geolocalizzazione
       //viewform.append('<div id="geolocation-in-atto">Geolocation in atto</div>');
-      getLocation(viewform)
+      getLocationDoReverseGeocodingAndSubmit(viewform)
     }
-    else { // HTML5 Geolocation not supported
-      viewform.append('<div>Geolocation non supportata</div>');
-    }
+
     // esegui il geocoding sul click del bottone di submit della vista
     var submit_button = $('input#edit-submit-ricerca-generica', viewform);
     submit_button.click(function (e) {
-      var geocoder = new GClientGeocoder();
       e.preventDefault();
-      console.log('prevented');
+      var geocoder = new GClientGeocoder();
       var ricerca_utente_text_field = $('#edit-distance-ricerca-utente', viewform);
       geocoder.getLatLng(ricerca_utente_text_field.val(),
         function(point) {
-          var form_input_lat = $('#edit-distance-latitude', viewform);
-          var form_input_lon = $('#edit-distance-longitude', viewform);
-          form_input_lon.attr('value', point.x);
-          form_input_lat.attr('value', point.y);
-          var gmappa = Drupal.gmap.getMap('ricerca_generica');
-          gmappa.map.setCenter(point, 16);
+          if (point) {
+            form_input_lon.val(point.x);
+            form_input_lat.val(point.y);
+            viewform.submit();
+          }
         });
     });
+
+    // centra la mappa se ci sono lat/long
+    if (Drupal.gmap) {
+      Drupal.gmap.addHandler('gmap', function (elem) {
+        var obj = this;
+        obj.bind('ready', function () {
+          var lat = form_input_lat.val();
+          var lon = form_input_lon.val();
+          if (lat !== '' && lon !== '') {
+            var gmappa = Drupal.gmap.getMap('ricerca_generica');
+            if (gmappa) {
+              gmappa.map.setCenter(new GLatLng(lat, lon), 14);
+            }
+          }
+        });
+      });
+    }
   };
 }());
