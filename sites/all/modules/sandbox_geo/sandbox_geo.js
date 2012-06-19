@@ -34,7 +34,7 @@
         var ricerca_utente_text_field = $('#edit-distance-ricerca-utente', viewform);
         ricerca_utente_text_field.val(text_addr);
         var gmappa = Drupal.gmap.getMap('ricerca_generica');
-        gmappa.map.setCenter(new GLatLng(lat, lon), 10);
+        gmappa.map.setCenter(new GLatLng(lat, lon), 16);
       }
     });
   }
@@ -68,5 +68,22 @@
     else { // HTML5 Geolocation not supported
       viewform.append('<div>Geolocation non supportata</div>');
     }
+    // esegui il geocoding sul click del bottone di submit della vista
+    var submit_button = $('input#edit-submit-ricerca-generica', viewform);
+    submit_button.click(function (e) {
+      var geocoder = new GClientGeocoder();
+      e.preventDefault();
+      console.log('prevented');
+      var ricerca_utente_text_field = $('#edit-distance-ricerca-utente', viewform);
+      geocoder.getLatLng(ricerca_utente_text_field.val(),
+        function(point) {
+          var form_input_lat = $('#edit-distance-latitude', viewform);
+          var form_input_lon = $('#edit-distance-longitude', viewform);
+          form_input_lon.attr('value', point.x);
+          form_input_lat.attr('value', point.y);
+          var gmappa = Drupal.gmap.getMap('ricerca_generica');
+          gmappa.map.setCenter(point, 16);
+        });
+    });
   };
 }());
