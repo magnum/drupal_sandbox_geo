@@ -1,0 +1,3 @@
+div#edit-distance-latitude-wrapper, div#edit-distance-longitude-wrapper, div#edit-distance-search-units-wrapper {
+  display: none !important;
+}

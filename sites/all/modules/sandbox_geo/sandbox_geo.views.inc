@@ -26,6 +26,7 @@ function sandbox_geo_views_pre_render (&$view) {
       drupal_set_html_head('<script src="'. check_url(url('http://maps.google.com/maps', array('query' => $query))) .'" type="text/javascript"></script>');
     }
 
+    drupal_add_css(drupal_get_path('module', 'sandbox_geo') . '/css/sandbox_geo.css');
     drupal_add_js(drupal_get_path('module', 'sandbox_geo') . '/sandbox_geo.js');
   }
 }

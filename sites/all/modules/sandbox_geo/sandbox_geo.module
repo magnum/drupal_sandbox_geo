@@ -14,15 +14,3 @@ function sandbox_geo_form_views_exposed_form_alter(&$form, &$form_alter) {
     );
   }
 }
-
-//function sandbox_geo_gmap ($op, &$map) {
-  //if ($op == 'pre_theme_map') {
-    ////$existing_js = drupal_add_js(NULL);
-    ////error_log(print_r($existing_js, TRUE));
-  //}
-  //return array();
-//}
-
-//function sandbox_geo_init() {
-  //drupal_add_js(drupal_get_path('module', 'sandbox_geo') . '/sandbox_geo.js');
-//}
