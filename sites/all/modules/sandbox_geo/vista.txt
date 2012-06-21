@@ -141,3 +141,81 @@ $handler->override_option('tab_options', array(
   'weight' => 0,
   'name' => 'navigation',
 ));
+$handler = $view->new_display('page', 'page filtra x provincia', 'page_2');
+$handler->override_option('filters', array(
+  'type' => array(
+    'operator' => 'in',
+    'value' => array(
+      'page' => 'page',
+      'post' => 'post',
+      'squadra' => 'squadra',
+      'story' => 'story',
+    ),
+    'group' => '0',
+    'exposed' => FALSE,
+    'expose' => array(
+      'operator' => FALSE,
+      'label' => '',
+    ),
+    'id' => 'type',
+    'table' => 'node',
+    'field' => 'type',
+    'relationship' => 'none',
+  ),
+  'province' => array(
+    'operator' => 'is',
+    'value' => '',
+    'group' => '0',
+    'exposed' => TRUE,
+    'expose' => array(
+      'use_operator' => 0,
+      'operator' => 'province_op',
+      'identifier' => 'province',
+      'label' => 'Location: Province',
+      'optional' => 1,
+      'single' => 1,
+      'remember' => 0,
+    ),
+    'id' => 'province',
+    'table' => 'location',
+    'field' => 'province',
+    'override' => array(
+      'button' => 'Use default',
+    ),
+    'relationship' => 'none',
+  ),
+));
+$handler->override_option('title', 'Ricerca per Provincia');
+$handler->override_option('style_plugin', 'gmap');
+$handler->override_option('style_options', array(
+  'grouping' => '',
+  'macro' => '[gmap zoom=9 |center=41.89409955811395,12.46124267578125 |width=600px |height=400px |control=Small |type=Map |id=ricerca_generica]',
+  'datasource' => 'location',
+  'latfield' => 'nid',
+  'lonfield' => 'nid',
+  'markers' => 'nodetype',
+  'markerfield' => 'nid',
+  'markertype' => 'drupal',
+  'center_on_nodearg' => 0,
+  'center_on_nodearg_arg' => '',
+  'highlight_nodearg' => 0,
+  'highlight_nodearg_arg' => '',
+  'highlight_nodearg_color' => '#FF0000',
+  'tooltipenabled' => 0,
+  'tooltipfield' => 'nid',
+));
+$handler->override_option('path', 'mappa_ricerca_per_provincia');
+$handler->override_option('menu', array(
+  'type' => 'none',
+  'title' => '',
+  'description' => '',
+  'weight' => 0,
+  'name' => 'navigation',
+));
+$handler->override_option('tab_options', array(
+  'type' => 'none',
+  'title' => '',
+  'description' => '',
+  'weight' => 0,
+  'name' => 'navigation',
+));
