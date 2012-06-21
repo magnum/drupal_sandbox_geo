@@ -111,8 +111,12 @@
   }; // END Drupal Behaviors.mappagenerica
 
   Drupal.behaviors.mappa_filtra_provincia = function (context) {
+    var viewform = $('#views-exposed-form-ricerca-generica-page-2');
     $('#ricerca-per-provincia').change(function(e) {
       $('#edit-province').val($(this).val());
+    });
+    $('#submit-ricerca-per-provincia').click(function() {
+      viewform.submit();
     });
   }; // END Drupal Behaviors.mappa_filtra_provincia
 }());
