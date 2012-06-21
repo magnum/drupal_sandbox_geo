@@ -14,3 +14,43 @@ function sandbox_geo_form_views_exposed_form_alter(&$form, &$form_alter) {
     );
   }
 }
+
+function sandbox_geo_block ($op = 'list', $delta = 0, $edit = array()) {
+  if ($op == 'list') {
+    $block = array (
+      'ricerca_generica_per_provincia' => array (
+        'info' => 'Filtra per Provincia',
+        'cache' => BLOCK_NO_CACHE,
+        //'visibility' => 1,
+        //'pages' => 'mappa_ricerca',
+      )
+    );
+  }
+  else if ($op == 'view') {
+    switch ($delta) {
+      case 'ricerca_generica_per_provincia':
+        $block = array (
+          'subject' => '',
+          'content' => '<select class="form-select" id="ricerca-per-provincia" name="province">',
+        );
+        $block['content'] .= '<option selected="selected" value="">Scegli Provincia</option>';
+
+        module_load_include('inc', 'location', 'supported/location.it');
+        $p = location_province_list_it();
+        foreach ($p as $k => $v) {
+          $block['content'] .= '<option value="' . $v . '">' . $v . '</option>';
+        }
+
+        //$query = 'SELECT name, code FROM bauboys_data_province';
+        //$result = db_query($query);
+        //while (($r = db_fetch_object($result))) {
+          //$block['content'] .= '<option value="' . $r->name . '">' . $r->name . '</option>';
+        //}
+
+        $block['content'] .= '</select>';
+        $block['content'] .= '<input type="submit" value="Scegli">';
+        break;
+    }
+  }
+  return $block;
+}
