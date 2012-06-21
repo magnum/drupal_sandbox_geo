@@ -108,5 +108,11 @@
         });
       });
     }
-  };
+  }; // END Drupal Behaviors.mappagenerica
+
+  Drupal.behaviors.mappa_filtra_provincia = function (context) {
+    $('#ricerca-per-provincia').change(function(e) {
+      $('#edit-province').val($(this).val());
+    });
+  }; // END Drupal Behaviors.mappa_filtra_provincia
 }());

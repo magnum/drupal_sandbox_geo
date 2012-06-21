@@ -49,6 +49,7 @@ function sandbox_geo_block ($op = 'list', $delta = 0, $edit = array()) {
 
         $block['content'] .= '</select>';
         $block['content'] .= '<input type="submit" value="Scegli">';
+        drupal_add_js(drupal_get_path('module', 'sandbox_geo') . '/js/sandbox_geo.js');
         break;
     }
   }
