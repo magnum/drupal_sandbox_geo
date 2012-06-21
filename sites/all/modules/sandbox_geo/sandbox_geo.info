@@ -1,6 +1,6 @@
 ; $Id:
 name = Sandboxgeo
-description =  Modulo che espande la vista di ricerca nodi generica per avere html5 location
+description =  Modulo che fornisce le viste di ricerca squadre
 package = Other
 version = VERSION
 core = 6.x

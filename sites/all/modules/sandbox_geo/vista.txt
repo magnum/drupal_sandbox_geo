@@ -1,5 +1,5 @@
 $view = new view;
-$view->name = 'ricerca_generica';
+$view->name = 'locations';
 $view->description = 'Ricerca nodi a partire da posizione specificata da utente con default che vale posizione html5';
 $view->tag = 'location';
 $view->base_table = 'location';
@@ -92,16 +92,47 @@ $handler->override_option('filters', array(
     ),
   ),
   'distance' => array(
+    'operator' => 'mbr',
+    'value' => array(
+      'latitude' => '',
+      'longitude' => '',
+      'postal_code' => '',
+      'country' => '',
+      'php_code' => '',
+      'nid_arg' => '',
+      'nid_loc_field' => 'node',
+      'uid_arg' => '',
+      'search_distance' => '50',
+      'search_units' => 'km',
+    ),
+    'group' => '0',
+    'exposed' => TRUE,
+    'expose' => array(
+      'use_operator' => 0,
+      'operator' => 'distance_op',
+      'identifier' => 'distance',
+      'label' => 'Location: Distance / Proximity',
+      'user_location_choose' => 0,
+      'optional' => 1,
+      'remember' => 0,
+    ),
+    'identifier' => 'dist',
+    'origin' => 'static',
     'id' => 'distance',
     'table' => 'location',
     'field' => 'distance',
+    'override' => array(
+      'button' => 'Use default',
+    ),
+    'relationship' => 'none',
+    'gmap_macro' => '',
   ),
 ));
 $handler->override_option('title', 'Cerca Squadre');
 $handler->override_option('style_plugin', 'gmap');
 $handler->override_option('style_options', array(
   'grouping' => '',
-  'macro' => '[gmap zoom=9 |center=41.89409955811395,12.46124267578125 |width=600px |height=400px |control=Small |type=Map |id=ricerca_generica]',
+  'macro' => '[gmap zoom=9 |center=41.89409955811395,12.46124267578125 |width=600px |height=400px |control=Small |type=Map |id=ricerca_distanza]',
   'datasource' => 'location',
   'latfield' => 'nid',
   'lonfield' => 'nid',
