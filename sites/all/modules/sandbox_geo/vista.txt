@@ -46,10 +46,7 @@ $handler->override_option('filters', array(
   'type' => array(
     'operator' => 'in',
     'value' => array(
-      'page' => 'page',
-      'post' => 'post',
       'squadra' => 'squadra',
-      'story' => 'story',
     ),
     'group' => '0',
     'exposed' => FALSE,
@@ -61,42 +58,9 @@ $handler->override_option('filters', array(
     'table' => 'node',
     'field' => 'type',
     'relationship' => 'none',
-  ),
-  'distance' => array(
-    'operator' => 'mbr',
-    'value' => array(
-      'latitude' => '',
-      'longitude' => '',
-      'postal_code' => '',
-      'country' => '',
-      'php_code' => '',
-      'nid_arg' => '',
-      'nid_loc_field' => 'node',
-      'uid_arg' => '',
-      'search_distance' => '50',
-      'search_units' => 'km',
-    ),
-    'group' => '0',
-    'exposed' => TRUE,
-    'expose' => array(
-      'use_operator' => 0,
-      'operator' => 'distance_op',
-      'identifier' => 'distance',
-      'label' => 'Location: Distance / Proximity',
-      'user_location_choose' => 0,
-      'optional' => 1,
-      'remember' => 0,
-    ),
-    'identifier' => 'dist',
-    'origin' => 'static',
-    'id' => 'distance',
-    'table' => 'location',
-    'field' => 'distance',
-    'relationship' => 'none',
     'override' => array(
       'button' => 'Override',
     ),
-    'gmap_macro' => '',
   ),
 ));
 $handler->override_option('access', array(
@@ -106,8 +70,34 @@ $handler->override_option('cache', array(
   'type' => 'none',
 ));
 $handler->override_option('items_per_page', 0);
-$handler = $view->new_display('page', 'Page mappa', 'page_1');
-$handler->override_option('title', 'Ricerca Nodi');
+$handler = $view->new_display('page', 'Page filtra per distanza', 'page_1');
+$handler->override_option('filters', array(
+  'type' => array(
+    'operator' => 'in',
+    'value' => array(
+      'squadra' => 'squadra',
+    ),
+    'group' => '0',
+    'exposed' => FALSE,
+    'expose' => array(
+      'operator' => FALSE,
+      'label' => '',
+    ),
+    'id' => 'type',
+    'table' => 'node',
+    'field' => 'type',
+    'relationship' => 'none',
+    'override' => array(
+      'button' => 'Override',
+    ),
+  ),
+  'distance' => array(
+    'id' => 'distance',
+    'table' => 'location',
+    'field' => 'distance',
+  ),
+));
+$handler->override_option('title', 'Cerca Squadre');
 $handler->override_option('style_plugin', 'gmap');
 $handler->override_option('style_options', array(
   'grouping' => '',
@@ -126,7 +116,7 @@ $handler->override_option('style_options', array(
   'tooltipenabled' => 0,
   'tooltipfield' => 'nid',
 ));
-$handler->override_option('path', 'mappa_ricerca');
+$handler->override_option('path', 'mappa_ricerca_per_distanza');
 $handler->override_option('menu', array(
   'type' => 'none',
   'title' => '',
@@ -141,15 +131,12 @@ $handler->override_option('tab_options', array(
   'weight' => 0,
   'name' => 'navigation',
 ));
-$handler = $view->new_display('page', 'page filtra x provincia', 'page_2');
+$handler = $view->new_display('page', 'Page filtra per provincia', 'page_2');
 $handler->override_option('filters', array(
   'type' => array(
     'operator' => 'in',
     'value' => array(
-      'page' => 'page',
-      'post' => 'post',
       'squadra' => 'squadra',
-      'story' => 'story',
     ),
     'group' => '0',
     'exposed' => FALSE,
@@ -161,6 +148,9 @@ $handler->override_option('filters', array(
     'table' => 'node',
     'field' => 'type',
     'relationship' => 'none',
+    'override' => array(
+      'button' => 'Override',
+    ),
   ),
   'province' => array(
     'operator' => 'is',
@@ -185,11 +175,11 @@ $handler->override_option('filters', array(
     'relationship' => 'none',
   ),
 ));
-$handler->override_option('title', 'Ricerca per Provincia');
+$handler->override_option('title', 'Cerca Squadre');
 $handler->override_option('style_plugin', 'gmap');
 $handler->override_option('style_options', array(
   'grouping' => '',
-  'macro' => '[gmap zoom=9 |center=41.89409955811395,12.46124267578125 |width=600px |height=400px |control=Small |type=Map |id=ricerca_generica]',
+  'macro' => '[gmap zoom=9 |center=41.89409955811395,12.46124267578125 |width=600px |height=400px |control=Small |type=Map |id=ricerca_province]',
   'datasource' => 'location',
   'latfield' => 'nid',
   'lonfield' => 'nid',
