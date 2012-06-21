@@ -6,7 +6,7 @@ function sandbox_geo_views_api() {
 }
 
 function sandbox_geo_form_views_exposed_form_alter(&$form, &$form_alter) {
-  if ($form['#id'] == 'views-exposed-form-ricerca-generica-page-1') {
+  if ($form['#id'] == 'views-exposed-form-locations-page-1') {
     $form['distance']['ricerca_utente'] = array (
       '#type' => 'textfield',
       '#weight' => -100,
@@ -18,7 +18,7 @@ function sandbox_geo_form_views_exposed_form_alter(&$form, &$form_alter) {
 function sandbox_geo_block ($op = 'list', $delta = 0, $edit = array()) {
   if ($op == 'list') {
     $block = array (
-      'ricerca_generica_per_provincia' => array (
+      'ricerca_per_provincia' => array (
         'info' => 'Filtra per Provincia',
         'cache' => BLOCK_NO_CACHE,
         //'visibility' => 1,
@@ -28,7 +28,7 @@ function sandbox_geo_block ($op = 'list', $delta = 0, $edit = array()) {
   }
   else if ($op == 'view') {
     switch ($delta) {
-      case 'ricerca_generica_per_provincia':
+      case 'ricerca_per_provincia':
         $block = array (
           'subject' => '',
           'content' => '<select class="form-select" id="ricerca-per-provincia" name="province">',

@@ -1,7 +1,7 @@
 <?php
 
 function sandbox_geo_views_pre_render (&$view) {
-  if ($view->name === 'ricerca_generica') {
+  if ($view->name === 'locations') {
     global $user;
     $locations = location_load_locations($user->uid, 'uid');
     if (!empty($locations[0]['latitude']) && !empty($locations[0]['longitude'])) {

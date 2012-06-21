@@ -42,8 +42,8 @@
     });
   }
 
-  Drupal.behaviors.mappagenerica = function (context) {
-    var viewform = $('#views-exposed-form-ricerca-generica-page-1');
+  Drupal.behaviors.mappadistanza = function (context) {
+    var viewform = $('#views-exposed-form-locations-page-1');
     var form_input_lat = $('#edit-distance-latitude', viewform);
     var form_input_lon = $('#edit-distance-longitude', viewform);
     var ricerca_utente_text_field = $('#edit-distance-ricerca-utente', viewform);
@@ -73,7 +73,7 @@
     }
 
     // esegui il geocoding sul click del bottone di submit della vista
-    var submit_button = $('input#edit-submit-ricerca-generica', viewform);
+    var submit_button = $('input#edit-submit-locations', viewform);
     submit_button.click(function (e) {
       e.preventDefault();
       var geocoder = new GClientGeocoder();
@@ -100,7 +100,7 @@
           var lat = form_input_lat.val();
           var lon = form_input_lon.val();
           if (lat !== '' && lon !== '') {
-            var gmappa = Drupal.gmap.getMap('ricerca_generica');
+            var gmappa = Drupal.gmap.getMap('ricerca_distanza');
             if (gmappa) {
               gmappa.map.setCenter(new GLatLng(lat, lon), 14);
             }
@@ -108,10 +108,10 @@
         });
       });
     }
-  }; // END Drupal Behaviors.mappagenerica
+  }; // END Drupal Behaviors.mappadistanza
 
   Drupal.behaviors.mappa_filtra_provincia = function (context) {
-    var viewform = $('#views-exposed-form-ricerca-generica-page-2');
+    var viewform = $('#views-exposed-form-locations-page-2');
     $('#ricerca-per-provincia').change(function(e) {
       $('#edit-province').val($(this).val());
     });
